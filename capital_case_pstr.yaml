@@ -1,14 +1,14 @@
 name: capital_case_pstr
 limit: 2000
-memory_size: 0x2000
+memory_size: 0x1000
 input_streams:
   0x80: ["hello My1 mama\n"]
   0x84: []
 reports:
-  # - name: Step-by-step
-  #   slice: all
-  #   view: |
-  #     {pc}:	{instruction}	{pc:label} 
+  - name: Step-by-step
+    slice: ["tail", 20]
+    view: |
+      {pc}:	{instruction}	{pc:label} 
   - name: Result
     slice: last
     view: |

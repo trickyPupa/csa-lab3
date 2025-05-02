@@ -1,9 +1,9 @@
     .data
 
 result_buff:     .byte  '________________________________'
-buff:            .byte  '________________________________'
 input_addr:      .word  0x80
 output_addr:     .word  0x84
+buff:            .byte  '________________________________'
 temp:            .word  0x40
 i:               .word  0
 j:               .word  0
@@ -22,7 +22,7 @@ upper_delta:     .word  0x20
 error_msg:       .word  0xCCCC_CCCC
 
     .text
-    .org         0x85
+    .org         0x90
 
 _start:
 
@@ -41,8 +41,6 @@ read_loop:
     load_addr    length
     add          const_1
     store_addr   length
-    sub          buffer_size
-    beqz         overflow
 
     load         temp
     sub          space
@@ -54,7 +52,7 @@ is_not_space:
     load_addr    is_first
     sub          const_1
     beqz         capitalize
-    bnez         set_is_first_0
+    bnez         decapitalize
 
 capitalize:
 
@@ -72,6 +70,24 @@ capitalize:
 
     jmp          set_is_first_0
 
+decapitalize:
+
+    load         temp
+    add          upper_delta
+    sub          a_ascii
+    ble          set_is_first_0
+
+    load         temp
+    add          upper_delta
+    sub          z_ascii
+    bgt          set_is_first_0
+
+    load         temp
+    add          upper_delta
+    store        temp
+
+    jmp          set_is_first_0
+
 store_char:
 
     load         temp
@@ -80,6 +96,10 @@ store_char:
     load         i
     add          const_1
     store        i
+
+    load_addr    length
+    sub          buffer_size
+    beqz         overflow
 
     jmp          read_loop
 
