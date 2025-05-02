@@ -1,0 +1,21 @@
+name: capital_case_pstr
+limit: 2000
+memory_size: 0x2000
+input_streams:
+  0x80: ["hello My1 mama\n"]
+  0x84: []
+reports:
+  # - name: Step-by-step
+  #   slice: all
+  #   view: |
+  #     {pc}:	{instruction}	{pc:label} 
+  - name: Result
+    slice: last
+    view: |
+      numio[0x80]: {io:0x80:dec}
+      numio[0x84]: {io:0x84:sym}
+      {memory:0x00:0x1f}
+    assert: |
+      numio[0x80]: [] >>> []
+      numio[0x84]: "" >>> "Hello My1 Mama"
+      mem[0..31]: 	0e 48 65 6c 6c 6f 20 4d 79 31 20 4d 61 6d 61 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f
