@@ -7,7 +7,7 @@ buff:            .byte  '________________________________'
 temp:            .word  0x40
 i:               .word  0
 j:               .word  0
-is_first:        .word  1
+is_first:        .word  1                  ; флаг для определения начала слова
 length:          .word  0
 
 buffer_size:     .word  0x20
@@ -19,7 +19,6 @@ space:           .word  0x20
 a_ascii:         .word  0x61
 z_ascii:         .word  0x7A
 upper_delta:     .word  0x20
-error_msg:       .word  0xCCCC_CCCC
 
     .text
     .org         0x90
@@ -30,6 +29,11 @@ _start:
     store        i
 
 read_loop:
+ ; цикл для чтения данных
+
+    load_addr    length
+    sub          buffer_size
+    beqz         overflow
 
     load_ind     input_addr
     and          const_FF
@@ -48,6 +52,7 @@ read_loop:
     bnez         is_not_space
 
 is_not_space:
+ ; если буква не пробем установить флаг is_first=0
 
     load_addr    is_first
     sub          const_1
@@ -55,6 +60,7 @@ is_not_space:
     bnez         decapitalize
 
 capitalize:
+ ; если буква первая в слове и строчная - сделать заглавной
 
     load         temp
     sub          a_ascii
@@ -71,6 +77,7 @@ capitalize:
     jmp          set_is_first_0
 
 decapitalize:
+ ; если буква не первая в слове и заглавная - сделать строчной
 
     load         temp
     add          upper_delta
@@ -89,6 +96,7 @@ decapitalize:
     jmp          set_is_first_0
 
 store_char:
+ ; запись данных в буффер
 
     load         temp
     store_ind    i
@@ -96,10 +104,6 @@ store_char:
     load         i
     add          const_1
     store        i
-
-    load_addr    length
-    sub          buffer_size
-    beqz         overflow
 
     jmp          read_loop
 
@@ -118,6 +122,7 @@ set_is_first_0:
     jmp          store_char
 
 end_read:
+ ; конец чтения, запись длины слова в результирующий буффер
 
     load_imm     buff
     store        i
@@ -133,6 +138,7 @@ end_read:
     store        j
 
 print_loop:
+ ; запись символов в результирующий буффер
 
     load         j
     sub          length
@@ -162,7 +168,7 @@ end:
 
 overflow:
 
-    load         error_msg
+    load_imm     0xCCCC_CCCC
     store_ind    output_addr
 
     halt
