@@ -1,0 +1,25 @@
+name: sum_of_digits
+limit: 1000
+memory_size: 0x1000
+input_streams:
+  0x80: [-5359]
+  0x84: []
+reports:
+  - name: All
+    slice: all
+    # slice: ["tail", 20]
+    view: |
+      T S A B {T:hex} {S:hex} {A:hex} {B:hex} R {R}
+      {pc}:	{instruction}	{pc:label} 
+  - name: Result
+    slice: last
+    view: |
+      numio[0x80]: {io:0x80:dec}
+      numio[0x84]: {io:0x84:dec}
+      A: {A:dec}
+      B: {B:dec}
+      stack: {stack:dec}
+      rstack: {rstack:dec}
+    assert: |
+      numio[0x80]: [] >>> []
+      numio[0x84]: [] >>> [22]
