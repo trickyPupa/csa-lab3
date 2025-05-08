@@ -6,6 +6,7 @@ divider:         .word  10
 is_positive:     .word  0   \ is_positive=false
 
     .text
+    .org 0x90
 
 _start:
     @p input_addr a! @ dup a!   \ num -> A
@@ -15,10 +16,6 @@ _start:
 
     @p is_positive
     if negative
-
-    \@p output_addr a! !
-
-    \halt
 
 negative:
     a inv lit 1 + a! \ -A -> A

@@ -5,9 +5,9 @@ input_streams:
   0x80: [-5359]
   0x84: []
 reports:
-  - name: All
-    slice: all
-    # slice: ["tail", 20]
+  - name: instructions
+    # slice: all
+    slice: ["tail", 20]
     view: |
       T S A B {T:hex} {S:hex} {A:hex} {B:hex} R {R}
       {pc}:	{instruction}	{pc:label} 
