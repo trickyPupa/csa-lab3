@@ -1,3 +1,5 @@
 acc32: https://wrench.edu.swampbuds.me/result/2bfb9ec1-d284-4382-9085-49e2939eb1c6
 
 f32a: https://wrench.edu.swampbuds.me/result/9a947667-bbee-4c68-9d70-e0afe3b9acf7
+
+risc-iv-32: https://wrench.edu.swampbuds.me/result/0da6fdb1-9d92-4de3-9124-7dd55178139c
