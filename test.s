@@ -1,50 +1,38 @@
     .data
 
-input_addr:      .word  0x80
-output_addr:     .word  0x84
+input_addr:      .word  0x80               ; Input address where the number 'n' is stored
+output_addr:     .word  0x84               ; Output address where the result should be stored
 
     .text
 
-    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
 _start:
-    @p input_addr a! @       \ n:[]
+    lui      t0, %hi(input_addr)             ; int * input_addr_const = 0x00;
+    addi     t0, t0, %lo(input_addr)         ; // t0 <- 0x00;
 
-    factorial
+    lw       t0, 0(t0)                       ; int input_addr = *input_addr_const;
+    ; // t0 <- *t0;
 
-    @p output_addr a! !
-    halt
+    lw       t1, 0(t0)                       ; int n = *input_addr;
+    ; // t1 <- *t0;
 
-    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+factorial_begin:
+    addi     t2, zero, 1                     ; int acc = 1;
+    ; // t2 <- 1;
 
-multiply:
-    lit 31 >r                \ for R = 31
-multiply_do:
-    +*                       \ mres-high:acc-old:n:[]; mres-low in a
-    next multiply_do
-    drop drop a              \ mres-low:n:[] => acc:n:[]
-    ;
-
-    \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
-factorial:
-    lit 1 over               \ n:acc:[]
 factorial_while:
-    dup                      \ n:n:acc:[]
-    if factorial_finish      \ n:acc:[]
+    beqz     t1, factorial_end               ; while (acc != 0) {
+    mul      t2, t2, t1                      ;   acc *= n   // t2 <- t2 * t1;
+    addi     t1, t1, -1                      ;   n = n - 1  // t1 <- t1 - 1;
+    j        factorial_while                 ; }
 
-    dup a!                   \ n:acc:[]
+factorial_end:
+    lui      t0, %hi(output_addr)            ; int * output_addr_const = 0x04;
+    addi     t0, t0, %lo(output_addr)        ; // t0 <- 0x04;
 
-    over                     \ acc:n:[]
-    lit 0                    \ 0:acc:n:[]
+    lw       t0, 0(t0)                       ; int output_addr = *output_addr_const;
+    ; // t0 <- *t0;
 
-    multiply
+    sw       t2, 0(t0)                       ; *output_addr_const = acc;
+    ; // *t0 = t2;
 
-    over                     \ n:acc
-    lit -1 +                 \ n-1:acc
-
-    factorial_while ;
-
-factorial_finish:
-    drop                     \ n:acc:[]
-    ;
+    halt
