@@ -10,6 +10,7 @@ reports:
     slice: ["tail", 20]
     view: |
       {T0:hex} {T1:hex} {T2:hex} {T3:hex}
+      {Sp:dec} {Ra:dec}
       {pc}:	{instruction}	{pc:label} 
   - name: Result
     slice: last
