@@ -1,14 +1,15 @@
     .data
-    .org     0x88                            ; space for stack
 
 input_addr:      .word  0x80
 output_addr:     .word  0x84
 default_val:     .word  0x20
 
     .text
-    .org     0x100
+    .org     0x88
 
 _start:
+
+    addi     sp, sp, 0x900
 
     lui      t0, %hi(input_addr)
     addi     t0, t0, %lo(input_addr)
@@ -23,7 +24,7 @@ _start:
 
 begin:
 
-    addi     sp, sp, 4
+    addi     sp, sp, -4
     sw       ra, 0(sp)
 
     addi     t2, zero, 0                     ; t2 - counter
@@ -35,12 +36,12 @@ begin:
 return:
 
     lw       ra, 0(sp)
-    addi     sp, sp, -4
+    addi     sp, sp, 4
     jr       ra
 
 count_zeros_recur:
 
-    addi     sp, sp, 4
+    addi     sp, sp, -4
     sw       ra, 0(sp)
 
     and      t4, t1, t3                      ; t2 & 1 -> t4
