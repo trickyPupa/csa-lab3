@@ -1,0 +1,28 @@
+name: revrese_string_pstr
+limit: 2000
+memory_size: 0x1000           
+input_streams:
+  0x80: ["world!\n"]
+  # 0x80: [10]
+  0x84: []
+reports:
+  - name: Step-by-step
+    slice: all
+    # slice: ["tail", 20]
+    view: |
+      length {D0:dec}, letter {D1:hex}
+      A1 {A1:hex} {memory:0x20:0x30}
+      A2 {A2:hex} {memory:0x00:0x10}
+      {pc}: {instruction} {pc:label}
+      _
+  - name: Result
+    slice: last
+    view: |
+      numio[0x80]: {io:0x80:dec}
+      numio[0x84]: {io:0x84:sym}
+      {memory:0x00:0x1f}
+    # {memory:0x20:0x3f}
+    assert: |
+      numio[0x80]: [] >>> []
+      numio[0x84]: "" >>> "!dlrow"
+      mem[0..31]: 	06 21 64 6c 72 6f 77 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f 5f
