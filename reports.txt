@@ -2,5 +2,7 @@ acc32: https://wrench.edu.swampbuds.me/result/2bfb9ec1-d284-4382-9085-49e2939eb1
 
 f32a: https://wrench.edu.swampbuds.me/result/9a947667-bbee-4c68-9d70-e0afe3b9acf7
 
-risc-iv-32 stack from 0 to up: https://wrench.edu.swampbuds.me/result/6f17094c-1011-41e5-8ed4-9ac5d30afeb7
-risc-iv-32 stack from *** to down: https://wrench.edu.swampbuds.me/result/67627a71-c76d-4140-9a9b-089deff389b6
+risc-iv-32 (stack from *** to down): https://wrench.edu.swampbuds.me/result/67627a71-c76d-4140-9a9b-089deff389b6
+
+m68k: https://wrench.edu.swampbuds.me/result/24f47d75-2fca-48e5-9a8a-fe3aae2a876f
+m68k with strange addresses: https://wrench.edu.swampbuds.me/result/f11948b6-2db9-4dce-a6cd-1b85700e972c
